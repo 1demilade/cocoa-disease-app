@@ -14,8 +14,7 @@ CORS(app)
 # Download model from Google Drive if not present
 # ================================
 MODEL_PATH = "model/DenseNet121_Cocoa_diagnosis.keras"
-GDRIVE_FILE_ID = "1UtlCqjhyIP5kFP-6SZxvBIAicQfk_51X"
-GDRIVE_URL = f"https://drive.google.com/uc?export=download&id={GDRIVE_FILE_ID}"
+GDRIVE_URL = f"https://drive.google.com/uc?export=download&id=1UtlCqjhyIP5kFP-6SZxvBIAicQfk_51X"
 
 def download_model():
     if not os.path.exists("model"):
@@ -32,7 +31,7 @@ def download_model():
 download_model()
 
 # Load model
-model = tf.keras.models.load_model("model/DenseNet121_Cocoa_diagnosis.keras")
+model = tf.keras.models.load_model(MODEL_PATH)
 
 # Define class names and image size
 class_names = ['anthracnose', 'cssvd', 'healthy']
