@@ -3,16 +3,33 @@ from flask_cors import CORS
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-
+import os
 import io
-
+import requests
 
 app = Flask(__name__)
 CORS(app)
 
+# ================================
+# Download model from Google Drive if not present
+# ================================
+MODEL_PATH = "DenseNet121_Cocoa_diagnosis.keras"
+GDRIVE_URL = f"https://drive.google.com/uc?export=download&id=1UtlCqjhyIP5kFP-6SZxvBIAicQfk_51X"
+
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        print("📥 Downloading model from Google Drive...")
+        response = requests.get(GDRIVE_URL, stream=True)
+        with open(MODEL_PATH, "wb") as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        print("✅ Model downloaded.")
+
+download_model()
 
 # Load model
-model = tf.keras.models.load_model("DenseNet121_Cocoa_diagnosis.keras")
+model = tf.keras.models.load_model(MODEL_PATH)
 
 # Define class names and image size
 class_names = ['anthracnose', 'cssvd', 'healthy']
